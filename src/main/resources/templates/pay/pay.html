@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>支付宝手机网站支付接口</title>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="/css/light7.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/app.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<header class="bar bar-nav">
+    <a href="../my/recharge.do" class="icon icon-left pull-left"></a>
+    <h1 class="title">订单详情</h1>
+</header>
+<form name=alipayment action='' method=post target="_blank" style="display: none">
+    <input id="WIDout_trade_no" name="WIDout_trade_no"/>
+    <input id="WIDsubject" name="WIDsubject"/>
+    <input id="WIDtotal_amount" name="WIDtotal_amount"/>
+    <input id="WIDbody" name="WIDbody"/>
+</form>
+
+<div class="content">
+    <div class="list-block">
+        <ul>
+            <li>
+                <div class="item-content">
+                    <div class="item-inner">
+                        <div class="item-title label">订单号：</div>
+                        <div class="item-input">
+                            <input type="text" class="WIDout_trade_no"/>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content">
+                    <div class="item-inner">
+                        <div class="item-title label">订单名称：</div>
+                        <div class="item-input">
+                            <input type="text" class="WIDsubject"/>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content">
+                    <div class="item-inner">
+                        <div class="item-title label">付款金额：</div>
+                        <div class="item-input">
+                            <input type="text" class="WIDtotal_amount" />
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content">
+                    <div class="item-inner">
+                        <div class="item-title label">商品描述：</div>
+                        <div class="item-input">
+                            <input type="text" class="WIDbody" value="111"/>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="content-block">
+        <div class="row">
+            <div class="col-50"><a href="../my/recharge.do" class="button button-big button-fill button-danger">取消</a></div>
+            <div class="col-50"><a href="#" style="background-color: #02aaf1" class="button button-big button-fill">支付</a></div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery-3.0.0.min.js"></script>
+<script src="/js/light7.js"></script>
+
+<script language="javascript">
+    $(function () {
+        var vNow = new Date();
+        var sNow = "";
+        sNow += String(vNow.getFullYear());
+        sNow += String(vNow.getMonth() + 1);
+        sNow += String(vNow.getDate());
+        sNow += String(vNow.getHours());
+        sNow += String(vNow.getMinutes());
+        sNow += String(vNow.getSeconds());
+
+        $(".WIDout_trade_no").val(sNow);
+        $(".WIDsubject").val('会员充值');
+        $(".WIDtotal_amount").val(0.01);
+        $(".WIDbody").val('会员充值');
+
+        //充值提交
+        $(".button-fill").click(function () {
+            document.getElementById("WIDout_trade_no").value = $(".WIDout_trade_no").val();
+            document.getElementById("WIDsubject").value = $(".WIDsubject").val();
+            document.getElementById("WIDtotal_amount").value = $(".WIDtotal_amount").val();
+            document.getElementById("WIDbody").value = $(".WIDbody").val();
+            //提交表单
+            document.getElementsByTagName('form')[0].submit();
+        });
+    });
+
+</script>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>支付结果</title>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="/css/light7.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/app.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <header class="bar bar-nav">
+        <a href="../my/recharge.do" class="icon icon-left pull-left"></a>
+        <h1 class="title">充值结果</h1>
+    </header>
+    <div class="content">
+        <div class="list-block">
+            <p th:if="${result == 'success'}" class="green-span">充值成功</p>
+            <p th:if="${result == 'fail'}" class="red-span">充值失败</p>
+        </div>
+    </div>
+</body>
+</html>

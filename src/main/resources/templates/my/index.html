@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="/css/light7.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/app.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div>
+    <header class="bar bar-nav">
+        <h1 class="title">我的</h1>
+    </header>
+
+    <nav class="bar bar-tab" th:fragment="topNav">
+        <a class="tab-item" href="../index/index.do">
+            <span class="icon icon-home"></span>
+            <span class="tab-label">首页</span>
+        </a>
+        <a class="tab-item eval" href="../eval/index.do">
+            <span class="icon icon-star"></span>
+            <span class="tab-label">测评</span>
+        </a>
+        <a class="tab-item homework" href="#">
+            <span class="icon icon-settings"></span>
+            <span class="tab-label">作业</span>
+        </a>
+        <a class="tab-item active" href="../my/index.do">
+            <span class="icon icon-me"></span>
+            <span class="tab-label">我的</span>
+        </a>
+    </nav>
+
+    <div class="content">
+        <div class="list-block">
+            <ul>
+                <li class="item-content item-link analysis_report_btn">
+                    <div class="item-media"><i class="icon icon-analysis_report"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title">我的分析报告</div>
+                    </div>
+                </li>
+                <li class="item-content item-link wrong_book_btn">
+                    <div class="item-media"><i class="icon error_export"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title">错题本导出</div>
+                    </div>
+                </li>
+                <li class="item-content item-link wrong_book_answer_btn">
+                    <div class="item-media"><i class="icon error_b_export"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title">错题本答案导出</div>
+                    </div>
+                </li>
+                <li class="item-content item-link collection_btn">
+                    <div class="item-media"><i class="icon collection_export"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title">我的收藏导出</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="list-block">
+            <ul>
+                <li class="item-content item-link collection_answer_btn">
+                    <div class="item-media"><i class="icon answer_export"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title">我的收藏答案导出</div>
+                    </div>
+                </li>
+                <li class="item-content item-link recharge_li">
+                    <div class="item-media"><i class="icon recharge"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title">充值中心</div>
+                    </div>
+                </li>
+                <li class="item-content item-link about_me_li">
+                    <div class="item-media"><i class="icon about_me"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title">关于我们</div>
+                    </div>
+                </li>
+                <li class="item-content item-link logout_li">
+                    <div class="item-media"><i class="icon about_me"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title">退出登录</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script src="/js/jquery-3.0.0.min.js"></script>
+<script src="/js/light7.js"></script>
+<script src="/js/light7-swiper.js"></script>
+<script src="/js/echarts.min.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/pdfmake.js"></script>
+<script src="/js/vfs_fonts.js"></script>
+<script src="/js/common.js"></script>
+
+
+<script>
+    //设置字体
+    pdfMake.fonts = {
+        Roboto: {
+            normal: 'Roboto-Regular.ttf',
+            bold: 'Roboto-Medium.ttf',
+            italics: 'Roboto-Italic.ttf',
+            bolditalics: 'Roboto-Italic.ttf'
+        },
+        微软雅黑:{
+            normal:'msyh.ttf',
+            bold: 'msyh.ttf',
+            italics: 'msyh.ttf',
+            bolditalics: 'msyh.ttf',
+        }
+    };
+
+    $(function () {
+        $(".analysis_report_btn").click(function () {
+            location.href = '../my/analysisReport.do';
+        });
+        $(".wrong_book_btn").click(function () {
+            $.exportWrongBookReport();
+        });
+        $(".wrong_book_answer_btn").click(function () {
+            $.exportWrongAnswerReport();
+        });
+        $(".collection_btn").click(function () {
+            $.exportCollectionReport();
+        });
+        $(".collection_answer_btn").click(function () {
+            $.exportCollectionAnswerReport();
+        });
+
+        $(".recharge_li").click(function () {
+            location.href = '../my/recharge.do';
+        });
+        $(".about_me_li").click(function () {
+            location.href = '../my/aboutMe.do';
+        });
+        $(".logout_li").click(function () {
+            location.href = '../my/logout.do'
+        });
+
+
+    });
+
+
+
+</script>
+</body>
+</html>

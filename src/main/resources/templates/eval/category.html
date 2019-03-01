@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>测评类别</title>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="/css/light7.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/app.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+<div>
+    <header class="bar bar-nav">
+        <a href="../index/index.do" class="icon icon-left pull-left"></a>
+        <h1 class="title">测评类别</h1>
+    </header>
+    <nav class="bar bar-tab">
+        <a class="tab-item" href="../index/index.do">
+            <span class="icon icon-home"></span>
+            <span class="tab-label">首页</span>
+        </a>
+        <a class="tab-item eval active" href="../eval/index.do">
+            <span class="icon icon-star"></span>
+            <span class="tab-label">测评</span>
+        </a>
+        <a class="tab-item homework" href="#">
+            <span class="icon icon-settings"></span>
+            <span class="tab-label">作业</span>
+        </a>
+        <a class="tab-item" href="../my/index.do">
+            <span class="icon icon-me"></span>
+            <span class="tab-label">我的</span>
+        </a>
+    </nav>
+    <div class="content">
+        <div class="list-block">
+            <ul>
+                <li class="item-content item-link cp_btn" th:each="ca : ${category}" th:id="${ca.id}">
+                    <div class="item-media"></div>
+                    <div class="item-inner">
+                        <div class="item-title" th:text="${ca.name}"></div>
+                        <div class="item-after" th:text="'￥' + ${ca.price}"></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery-3.0.0.min.js"></script>
+<script src="/js/light7.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/common.js"></script>
+<<script>
+    $(function () {
+        //点击测评类别
+        $('.cp_btn').click(function () {
+            Util.ajaxPost('../eval/check.do',null,function (data) {
+                if(data == false){
+                    var buttons1 = [
+                        {
+                            text: '余额不足',
+                            label: true
+                        },
+                        {
+                            text: '充值',
+                            bold: true,
+                            color: 'danger',
+                            onClick: function() {
+                                location.href = '../pay/pay.do';
+                            }
+                        },
+                    ];
+                    var buttons2 = [
+                        {
+                            text: '取消',
+                            bg: 'danger'
+                        }
+                    ];
+                    var groups = [buttons1, buttons2];
+                    $.actions(groups);
+
+                    return;
+                }
+                var cpCategoryId = $(this).attr('id');
+                sessionStorage.setItem('cpCategoryId',cpCategoryId);
+                sessionStorage.setItem('lbTopName',$(this).find('.item-title').text());
+
+                location.href = 'information.do?categoryId=' + cpCategoryId;
+            });
+
+
+        })
+    });
+</script>
+</body>
+</html>

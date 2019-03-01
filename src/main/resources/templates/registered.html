@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="/css/light7.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/app.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div>
+    <header class="bar bar-nav">
+        <a href="loginPage.do" class="icon icon-left pull-left"></a>
+        <h1 class="title">用户注册</h1>
+    </header>
+    <div class="content">
+        <div class="list-block">
+            <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"><i class="icon icon-form-name"></i></div>
+                        <div class="item-inner">
+                            <div class="item-input">
+                                <input type="text" id="user_name" placeholder="请输入用户名">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"><i class="icon icon-form-password"></i></div>
+                        <div class="item-inner">
+                            <div class="item-input">
+                                <input type="password" id="password" placeholder="请设置密码" class="">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"><i class="icon icon-form-password"></i></div>
+                        <div class="item-inner">
+                            <div class="item-input">
+                                <input type="password" id="new_password" placeholder="请确认密码" class="">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"><i class="icon icon-form-password"></i></div>
+                        <div class="item-inner">
+                            <div class="item-input">
+                                <input type="text" id='city_picker' placeholder="请选择省市区">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"><i class="icon icon-form-password"></i></div>
+                        <div class="item-inner">
+                            <div class="item-input">
+                                <select id='school'>
+                                    <option>XX中学</option>
+                                    <option>XXX小学</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"><i class="icon icon-form-password"></i></div>
+                        <div class="item-inner">
+                            <div class="item-input">
+                                <input type="text" id='miBao' placeholder="请设置密码密保">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="content-block">
+            <div class="row">
+                <div class="col-100"><a href="#" class="button button-big button-fill button-success">注册</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery-3.0.0.min.js"></script>
+<script src="/js/light7.js"></script>
+<script src="/js/light7-city-picker.min.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/app.js"></script>
+<script>
+    $("#city_picker").cityPicker({
+        toolbarTemplate: '<header class="bar bar-nav">\
+    <button class="button button-link pull-right close-picker">确认</button>\
+    <h1 class="title">请选择</h1>\
+    </header>'
+    });
+
+    $(function () {
+        $(".button-success").click(function () {
+            var user = {
+                userName:$("#user_name").val(),
+                password:$("#password").val(),
+                newPassword:$("#new_password").val(),
+                address:$("#city_picker").val(),
+                school:$("#school").val(),
+                miBao:$("#miBao").val(),
+            };
+            if(Util.isEmpty(user.userName) || Util.isEmpty(user.password)
+                || Util.isEmpty(user.newPassword)|| Util.isEmpty(user.address)
+                || Util.isEmpty(user.school)|| Util.isEmpty(user.miBao)){
+                Util.alert('输入不能为空');
+                return;
+            }
+            if(user.password != user.newPassword){
+                Util.alert('输入密码不一致');
+                return;
+            }
+            Util.ajaxPost('registered.do',user,function (data) {
+                if(data==true){
+                     Util.comfirm('注册成功,前往登录',function () {
+                         location.href = '../loginPage.do';
+                     });
+                }else {
+                    Util.alert('注册失败');
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>充值中心</title>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="/css/light7.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/app.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div>
+    <header class="bar bar-nav">
+        <a href="../my/index.do" class="icon icon-left pull-left"></a>
+        <h1 class="title">充值中心</h1>
+    </header>
+    <div class="content about_me_page">
+        <div class="list-block">
+            <img src="/img/custom/my/logo.jpg">
+        </div>
+        <div class="list-block">
+            <div class="row">
+                我的余额
+            </div>
+            <div class="row">
+                <div style="font-weight: bold;font-size: 1.5rem" th:text="'￥' + ${balance}"> </div>
+            </div>
+
+            <div class="row">
+                <div class="col-100">
+                    <p> <a href="../pay/pay.do" class="button  button-big  button-round button-fill button-danger">充值</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery-3.0.0.min.js"></script>
+<script src="/js/light7.js"></script>
+</body>
+</html>

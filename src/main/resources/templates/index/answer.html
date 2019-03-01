@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>答题</title>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="/css/light7.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/light7-swiper.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/app.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<!-- page 容器 -->
+<div>
+    <header class="bar bar-nav">
+        <a href="#" class="icon icon-left pull-left"></a>
+        <h1 class="title"></h1>
+    </header>
+    <!-- 页面内容区 -->
+    <div class="content">
+        <div class="card">
+            <div class="card-header top-answer-time">
+                <div class="item-title">练习用时:<span class="record_time green-span">00:00:00</span></div>
+                <div class="item-after answer_order"></div>
+            </div>
+            <div class="card-content">
+                <div class="swiper-container" data-space-between='10' data-pagination='.swiper-pagination'>
+                    <div class="swiper-wrapper"></div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="col-33">
+                    <a href="#" class="add_error_btn"> 加错题本 </a>
+                </div>
+                <div class="col-33">
+                    <a href="#" class="add_sc_btn">加收藏</a>
+                </div>
+                <div class="col-33">
+                    <a href="#" class="add_report_btn">本次报告</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-aside">
+        答题分析报告
+    </div>
+</div>
+<script src="/js/jquery-3.0.0.min.js"></script>
+<script src="/js/light7.js"></script>
+<script src="/js/light7-swiper.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/app.js"></script>
+
+<<script th:inline="javascript">
+
+    $(function () {
+        //返回上一步
+        $('.pull-left').click(function () {
+            console.log('chooseZsd.do?zjId=' + sessionStorage.getItem('zjId'));
+            location.href = 'chooseZsd.do?zjId=' + sessionStorage.getItem('zjId');
+        })
+        //设置头部标题
+        $(".title").text(sessionStorage.getItem('zsdTopName'));
+        //开启定时器
+        $(".record_time").RecordTime();
+
+        var zsdId = [[${zsdId}]];
+        var questions = [[${questions}]];
+        if(!questions || questions.length == 0){
+            $(".content").html('');
+            return;
+        }
+        if(questions){
+            $(".swiper-wrapper").Answer({
+                questions:questions,
+                zsdId:zsdId,
+                type:1
+            });
+        }
+
+
+    })
+
+
+</script>
+</body>
+</html>

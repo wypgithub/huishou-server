@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="/css/light7.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/app.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="answer_report">
+    <header class="bar bar-nav">
+        <a href="#" class="icon icon-left pull-left"></a>
+        <h1 class="title">练题报告</h1>
+    </header>
+    <div class="content">
+        <div class="card report_card">
+            <div class="card-header">
+                <div class="circle_percent" id="circle_percent"></div>
+                <div class="result_count">
+                    <p>练习用时:</p>
+                    <p><span class="total_time time_consuming"></span></p>
+                    <p> 做对了:<span class="total_time correct_num"></span>道题</p>
+                    <p> 做错了:<span class="total_time wrong_num"></span>道题</p>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="list-block circle_orders">
+                    <ul></ul>
+                </div>
+                <div class="list-block">
+                    <br>
+                    <p><a href="../my/index.do" class="button button-big button-fill button-success">登录后下载学习报告,错题本</a></p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="col-50">
+                    <a href="#" class="error_analysis_btn"> 错题解析 </a>
+                </div>
+                <div class="col-50">
+                    <a href="#" class="continue_btn"> 继续练习 </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 错题解析 -->
+<div class="error_analysis_div">
+    <header class="bar bar-nav">
+        <a href="#" class="icon icon-left pull-left"></a>
+        <h1 class="title">错题解析</h1>
+    </header>
+
+    <div class="content card"></div>
+</div>
+
+<script src="/js/jquery-3.0.0.min.js"></script>
+<script src="/js/light7.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/echarts.min.js"></script>
+<script>
+    $(function () {
+        var questions = localStorage.getItem('questions');
+        if(questions){
+            questions = JSON.parse(questions);
+        }
+        var correct = 0;
+        var wrong = 0;
+        var liHtml = '';
+        var templateHtml = '<li><div class="circle_order @color">@INDEX</div></li>';
+        $.each(questions,function (index,question) {
+            if(question.result == 'correct'){
+                correct ++;
+                liHtml += templateHtml.replace('@color','circle_order_green').replace('@INDEX',index + 1);
+            }else {
+                wrong++;
+                liHtml += templateHtml.replace('@color','circle_order_red').replace('@INDEX',index + 1);
+            }
+        });
+        $(".time_consuming").text(localStorage.getItem('time_consuming'));
+        $(".correct_num").text(correct);
+        $(".wrong_num").text(wrong);
+        $("ul").html(liHtml);
+
+        //渲染图形
+        var instance = echarts.init(document.getElementById("circle_percent"));
+        instance.setOption({
+            series: [
+                {
+                    type:'pie',
+                    radius: ['70%', '90%'],
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data:[
+                        {
+                            value:parseInt(wrong *100/(correct + wrong)),
+                            name:'正确率\n',
+                            itemStyle:{
+                                color:'#DDDDDD'
+                            },
+                            label: {
+                                position:'center',
+                                color:'#2bbb61',
+                                fontSize: '15',
+                            },
+                        },
+                        {
+                            value:parseInt(correct *100/(correct + wrong)),
+                            itemStyle:{
+                                color:'#2bbb61'
+                            },
+                            label: {
+                                formatter: '{d}%',
+                                position:'center',
+                                color:'#2bbb61',
+                                fontSize: '30',
+                            },
+                        },
+
+                    ]
+                }
+            ]
+        });
+
+        //继续练习
+        $(".answer_report .pull-left,.continue_btn").click(function () {
+            location.href = 'chooseSt.do?zsdId=' + localStorage.getItem('zsdId');
+        });
+
+        var errorAnalysisTemplate = '<div class="card-content">'+
+                ' <div class="card-content-inner">@INDEX.@HEADER</div>'+
+                '   <div class="list-block">'+
+                '   <div class="card-content-inner green-span">【试题解析】'+
+                '   <span class="analysis">@CONTENT</span>'+
+                '</div>'+
+                '</div>'+
+                '</div>';
+        //错题解析
+        $(".error_analysis_btn").click(function () {
+            var errorAnalysisHtml = '';
+            var errorQuestions = JSON.parse(localStorage.getItem('questions'));
+            $.each(errorQuestions,function (index,question) {
+                errorAnalysisHtml += errorAnalysisTemplate
+                    .replace('@INDEX',index+1)
+                    .replace("@HEADER",question.question)
+                    .replace("@CONTENT",question.analysis);
+            });
+            $(".error_analysis_div .content").html(errorAnalysisHtml);
+            $('.answer_report').hide().siblings('.error_analysis_div').show();
+            $(".error_analysis_div .pull-left").click(function () {
+                $('.error_analysis_div').hide().siblings('.answer_report').show();
+            });
+        });
+
+
+
+
+    });
+</script>
+</body>
+</html>

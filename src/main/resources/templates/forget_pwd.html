@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="/css/light7.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/app.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div>
+    <header class="bar bar-nav">
+        <a href="loginPage.do" class="icon icon-left pull-left"></a>
+        <h1 class="title">找回密码</h1>
+    </header>
+    <div class="content">
+        <div class="list-block">
+            <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-input" id="userName" >
+                                <input type="text" placeholder="请输入你要找回账号">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-input row">
+                                <div class="col-50" id="code" >
+                                    <input type="text" placeholder="请输入验证码">
+                                </div>
+                                <div class="col-50">
+                                    <div id="v_container" style="width: 100px;height: 50px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-input" id="miBao" >
+                                <input type="text" placeholder="请输入密保" >
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="content-block">
+            <div class="row">
+                <div class="col-100"><a href="#" class="back_pwd button button-big button-fill button-success">找回</a></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content reset_pwd">
+        <div class="list-block">
+            <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-input" id="newPwd" >
+                                <input type="text" placeholder="请输入新密码">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-input row">
+                                <div class="col-50" id="reNewPwd" >
+                                    <input type="text" placeholder="再次输入新密码">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="content-block">
+            <div class="row">
+                <div class="col-100"><a href="#" class="reset_pwd_btn button button-big button-fill button-success">确认</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/jquery-3.0.0.min.js"></script>
+<script src="/js/light7.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/gVerify.js"></script>
+<script>
+    $(function () {
+        var verifyCode = new GVerify("v_container");
+
+        /**
+         * 找回密码
+         */
+        $(".back_pwd").click(function () {
+            var user = {};
+            user.userName = $("#userName input").val();
+            user.miBao = $("#miBao input").val();
+            user.code = $("#code input").val();
+            if(Util.isEmpty(user.userName) || Util.isEmpty(user.code)|| Util.isEmpty(user.miBao)){
+                Util.alert('输入不能为空');
+                return;
+            }
+            if(verifyCode.validate(user.code) == false){
+                Util.alert('验证码错误');
+                return;
+            }
+            Util.ajaxPost('checkMiBao.do',user,function (data) {
+                if(!data){
+                    Util.alert('密保错误');
+                    return;
+                }
+                //重置密码
+                $(".reset_pwd").show().siblings('.content').hide();
+                resetPwd(data);
+            });
+        });
+        /**
+         * 重置密码
+         */
+        function resetPwd(user) {
+            user.registeredDate = null;
+            $(".reset_pwd_btn").unbind('click').click(function () {
+                user.password = $("#newPwd input").val();
+                user.reNewPwd = $("#reNewPwd input").val();
+                if(Util.isEmpty(user.password) || Util.isEmpty(user.reNewPwd)){
+                    Util.alert('输入不能为空');
+                    return;
+                }
+                if($.trim(user.password) != $.trim(user.reNewPwd)){
+                    Util.alert('密码输入不一致');
+                    return;
+                }
+                Util.ajaxPost('resetPwd.do',user,function (data) {
+                    if(data == '1'){
+                        Util.comfirm('重置密码成功,请登录',function () {
+                            location.href = 'loginPage.do';
+                        });
+                    }
+                });
+            });
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
